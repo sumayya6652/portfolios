@@ -38,9 +38,8 @@ const HeroSection = () => {
               repeat={Infinity}
             />
           </h1>
-          <p className="text-[#ADB7BE] text-base sm:text-lg mb-6 lg:text-xl">
-          Hi, I’m Sumayya Maqdoom Makkiya, 
-          a passionate front-end developer with a 
+          <p className="text-[#ADB7BE] text-base sm:text-lg mb-6 lg:text-xl"> 
+          A passionate front-end developer with a 
           strong foundation in Machine Learning 
           and Data Science. I hold a Bachelor's 
           degree in Computer Science with an 8.0
