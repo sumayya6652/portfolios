@@ -38,18 +38,17 @@ const HeroSection = () => {
               repeat={Infinity}
             />
           </h1>
-          <p className="text-[#ADB7BE] text-base sm:text-lg mb-6 lg:text-xl"> 
-          A passionate front-end developer with a 
-          strong foundation in Machine Learning 
-          and Data Science. I hold a Bachelor's 
-          degree in Computer Science with an 8.0
-           GPA and have hands-on experience in
-            building intuitive interfaces and 
-            data-driven applications. Driven by curiosity and creativity, I aim to craft
-             digital experiences that leave a lasting impact.
+          <p className="text-[#ADB7BE] text-base sm:text-lg mb-6 lg:text-xl">
+  A passionate front-end developer with a
+  strong foundation in Machine Learning
+  and Data Science. I hold a Bachelor&apos;s
+  degree in Computer Science with an 8.0
+  GPA and have hands-on experience in
+  building intuitive interfaces and
+  data-driven applications. Driven by curiosity and creativity, I aim to craft
+  digital experiences that leave a lasting impact.
+</p>
 
-
-          </p>
           <div>
             <Link
               href="https://www.linkedin.com/in/sumayya-maqdoom/"
