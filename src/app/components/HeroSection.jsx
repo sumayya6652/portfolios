@@ -22,11 +22,13 @@ const HeroSection = () => {
             <br></br>
             <TypeAnimation
               sequence={[
-                "Judy",
+                "Sumayya",
                 1000,
-                "Web Developer",
+                "FullStack Developer",
                 1000,
-                "Mobile Developer",
+                "Data Scientist",
+                1000,
+                "Data Engineer",
                 1000,
                 "UI/UX Designer",
                 1000,
@@ -37,18 +39,27 @@ const HeroSection = () => {
             />
           </h1>
           <p className="text-[#ADB7BE] text-base sm:text-lg mb-6 lg:text-xl">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-            voluptuous.
+          Hi, I’m Sumayya Maqdoom Makkiya, 
+          a passionate front-end developer with a 
+          strong foundation in Machine Learning 
+          and Data Science. I hold a Bachelor's 
+          degree in Computer Science with an 8.0
+           GPA and have hands-on experience in
+            building intuitive interfaces and 
+            data-driven applications. Driven by curiosity and creativity, I aim to craft
+             digital experiences that leave a lasting impact.
+
+
           </p>
           <div>
             <Link
-              href="/#contact"
+              href="https://www.linkedin.com/in/sumayya-maqdoom/"
               className="px-6 inline-block py-3 w-full sm:w-fit rounded-full mr-4 bg-gradient-to-br from-primary-500 to-secondary-500 hover:bg-slate-200 text-white"
             >
               Hire Me
             </Link>
             <Link
-              href="/"
+              href="/resume.pdf"
               className="px-1 inline-block py-1 w-full sm:w-fit rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 hover:bg-slate-800 text-white mt-3"
             >
               <span className="block bg-[#121212] hover:bg-slate-800 rounded-full px-5 py-2">
