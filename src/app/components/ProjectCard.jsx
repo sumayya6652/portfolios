@@ -1,45 +1,22 @@
-// import React from "react";
-// import { CodeBracketIcon, EyeIcon } from "@heroicons/react/24/outline";
-// import Link from "next/link";
-
-// const ProjectCard = ({ imgUrl, title, description, gitUrl, previewUrl }) => {
-//   return (
-//     <div>
-//       <div
-//         className="h-52 md:h-72 rounded-t-xl relative group"
-//         style={{ background: `url(${imgUrl})`, backgroundSize: "cover" }}
-//       >
-//         <div className="overlay items-center justify-center absolute top-0 left-0 w-full h-full bg-[#181818] bg-opacity-0 hidden group-hover:flex group-hover:bg-opacity-80 transition-all duration-500 ">
-//           <Link
-//             href={gitUrl}
-//             className="h-14 w-14 mr-2 border-2 relative rounded-full border-[#ADB7BE] hover:border-white group/link"
-//           >
-//             <CodeBracketIcon className="h-10 w-10 text-[#ADB7BE] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  cursor-pointer group-hover/link:text-white" />
-//           </Link>
-//           <Link
-//             href={previewUrl}
-//             className="h-14 w-14 border-2 relative rounded-full border-[#ADB7BE] hover:border-white group/link"
-//           >
-//             <EyeIcon className="h-10 w-10 text-[#ADB7BE] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  cursor-pointer group-hover/link:text-white" />
-//           </Link>
-//         </div>
-//       </div>
-//       <div className="text-white rounded-b-xl mt-3 bg-[#181818]py-6 px-4">
-//         <h5 className="text-xl font-semibold mb-2">{title}</h5>
-//         <p className="text-[#ADB7BE]">{description}</p>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ProjectCard;
-import React from "react";
-import { CodeBracketIcon, EyeIcon } from "@heroicons/react/24/outline";
+// components/ProjectCard.jsx
+"use client";
+import React, { useState } from "react";
 import Link from "next/link";
+import { CodeBracketIcon, EyeIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
+import { AnimatePresence, motion } from "framer-motion";
 
-const ProjectCard = ({ imgUrl, title, description, gitUrl, previewUrl }) => {
+const ProjectCard = ({
+  imgUrl,
+  title,
+  description,
+  gitUrl,
+  previewUrl,
+  meta, // { timeframe, role, teamSize, status, highlights[] }
+}) => {
+  const [open, setOpen] = useState(false);
+
   return (
-    <div className="rounded-xl overflow-hidden border border-white/10 bg-[#121212]">
+    <div className="rounded-2xl overflow-hidden border border-white/10 bg-[#121212]">
       <div
         className="h-52 md:h-72 relative group"
         style={{
@@ -47,8 +24,10 @@ const ProjectCard = ({ imgUrl, title, description, gitUrl, previewUrl }) => {
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
+        role="img"
+        aria-label={`${title} thumbnail`}
       >
-        <div className="absolute inset-0 bg-[#181818] bg-opacity-0 hidden group-hover:flex group-hover:bg-opacity-80 transition-all duration-300 items-center justify-center">
+        <div className="absolute inset-0 bg-[#181818] bg-opacity-0 hidden group-hover:flex group-hover:bg-opacity-75 transition-all duration-300 items-center justify-center">
           {gitUrl ? (
             <Link
               href={gitUrl}
@@ -75,9 +54,94 @@ const ProjectCard = ({ imgUrl, title, description, gitUrl, previewUrl }) => {
         </div>
       </div>
 
-      <div className="text-white rounded-b-xl bg-[#181818] py-6 px-4">
-        <h5 className="text-xl font-semibold mb-2">{title}</h5>
+      <div className="bg-[#181818] py-6 px-4">
+        <h5 className="text-white text-xl font-semibold mb-2">{title}</h5>
         <p className="text-[#ADB7BE] text-sm leading-relaxed">{description}</p>
+
+        {/* Buttons row */}
+        <div className="mt-4 flex flex-wrap gap-2">
+          {previewUrl ? (
+            <Link
+              href={previewUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 text-white text-sm hover:opacity-90"
+            >
+              Live / Preview
+            </Link>
+          ) : null}
+
+          {gitUrl ? (
+            <Link
+              href={gitUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 rounded-full border border-white/15 text-white text-sm hover:bg-white/5"
+            >
+              GitHub
+            </Link>
+          ) : null}
+
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            className="px-4 py-2 rounded-full border border-white/15 text-white text-sm hover:bg-white/5 inline-flex items-center gap-2"
+            aria-expanded={open}
+          >
+            <InformationCircleIcon className="h-5 w-5" />
+            {open ? "Hide details" : "More details"}
+          </button>
+        </div>
+
+        {/* Expandable details (smooth transition) */}
+        <AnimatePresence initial={false}>
+          {open ? (
+            <motion.div
+              key="details"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="overflow-hidden"
+            >
+              <div className="mt-4 rounded-xl border border-white/10 bg-black/30 p-4">
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <p className="text-white/60">Timeframe</p>
+                    <p className="text-white">{meta?.timeframe || "—"}</p>
+                  </div>
+                  <div>
+                    <p className="text-white/60">Team size</p>
+                    <p className="text-white">{meta?.teamSize || "—"}</p>
+                  </div>
+                  <div>
+                    <p className="text-white/60">Role</p>
+                    <p className="text-white">{meta?.role || "—"}</p>
+                  </div>
+                  <div>
+                    <p className="text-white/60">Status</p>
+                    <p className="text-white">{meta?.status || "—"}</p>
+                  </div>
+                </div>
+
+                {meta?.highlights?.length ? (
+                  <div className="mt-3">
+                    <p className="text-white/60 text-sm mb-2">Key highlights</p>
+                    <ul className="list-disc pl-5 text-white/80 text-sm space-y-1">
+                      {meta.highlights.map((h, idx) => (
+                        <li key={idx}>{h}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+
+                <p className="text-white/40 text-xs mt-3">
+                  Note: Edit these details to match your exact timeline/team.
+                </p>
+              </div>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
       </div>
     </div>
   );
