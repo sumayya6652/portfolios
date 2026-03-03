@@ -135,9 +135,9 @@ const ProjectCard = ({
                   </div>
                 ) : null}
 
-                <p className="text-white/40 text-xs mt-3">
+                {/* <p className="text-white/40 text-xs mt-3">
                   Note: Edit these details to match your exact timeline/team.
-                </p>
+                </p> */}
               </div>
             </motion.div>
           ) : null}
