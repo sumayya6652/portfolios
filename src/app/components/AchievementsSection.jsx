@@ -30,7 +30,7 @@ const EXPERIENCE = [
   {
     company: "Janata Diagnostic Centre",
     role: "SDE • Web Developer",
-    timeframe: "2024 — 2025",
+    timeframe: "2022 — 2024",
     location: "Remote",
     bullets: [
       "Built and deployed a production Next.js website with responsive UI and clean routing.",
