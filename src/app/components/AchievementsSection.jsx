@@ -1,252 +1,187 @@
-// "use client";
-// import React from "react";
-// import dynamic from "next/dynamic";
-
-// const AnimatedNumbers = dynamic(
-//   () => {
-//     return import("react-animated-numbers");
-//   },
-//   { ssr: false }
-// );
-
-// const achievementsList = [
-//   {
-//     metric: "Projects",
-//     value: "50",
-//     postfix: "+",
-//   },
-//   {
-//     postfix: "+",
-//     metric: "Users Visited",
-//     value: "20",
-//   },
-//   {
-//     metric: "Awards",
-//     value: "3",
-//   },
-//   {
-//     metric: "Years",
-//     value: "2",
-//   },
-// ];
-
-// const AchievementsSection = () => {
-//   return (
-//     <div className="py-8 px-4 xl:gap-16 sm:py-16 xl:px-16">
-//       <div className="sm:border-[#33353F] sm:border rounded-md py-8 px-16 flex flex-col sm:flex-row items-center justify-between">
-//         {achievementsList.map((achievement, index) => {
-//           return (
-//             <div
-//               key={index}
-//               className="flex flex-col items-center justify-center mx-4 my-4 sm:my-0"
-//             >
-//               <h2 className="text-white text-4xl font-bold flex flex-row">
-//                 {achievement.prefix}
-//                 <AnimatedNumbers
-//                   includeComma
-//                   animateToNumber={parseInt(achievement.value)}
-//                   locale="en-US"
-//                   className="text-white text-4xl font-bold"
-//                   configs={(_, index) => {
-//                     return {
-//                       mass: 1,
-//                       friction: 100,
-//                       tensions: 140 * (index + 1),
-//                     };
-//                   }}
-//                 />
-//                 {achievement.postfix}
-//               </h2>
-//               <p className="text-[#ADB7BE] text-base">{achievement.metric}</p>
-//             </div>
-//           );
-//         })}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AchievementsSection;
 // components/AchievementsSection.jsx
 "use client";
 
 import React from "react";
-import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 
-const AnimatedNumbers = dynamic(() => import("react-animated-numbers"), {
-  ssr: false,
-});
-
 /**
- * Keep the component name AchievementsSection, but change content to Experience.
- * “Stairs going up” effect: each card is slightly higher than the previous one
- * + staggered animation on load.
+ * LinkedIn-style vertical timeline (cooler “ladder” while scrolling)
+ * - Keeps component name AchievementsSection
+ * - Scroll reveals each role with staggered animation
+ * - Uses a center line + “steps” dots
+ * - Looks good on both mobile + desktop
  *
- * IMPORTANT: Replace/adjust titles/dates to match your real timeline.
+ * Edit the experience data to match your exact truth (dates/location/bullets).
  */
-const experienceList = [
+
+const EXPERIENCE = [
   {
     company: "DataBeat",
     role: "Custom Front-End Developer • Data Analyst",
-    location: "Hyderabad, India",
     timeframe: "Feb 2024 — Jan 2025",
-    level: 1,
+    location: "Hyderabad, India",
     bullets: [
-      "Built Next.js/React features and internal tools for faster operations.",
-      "Worked with APIs + spreadsheets for ingestion and reporting workflows.",
-      "Collaborated cross-functionally to deliver production-ready releases.",
+      "Built Next.js/React features and internal tools for product + ops workflows.",
+      "Integrated APIs and automated ingestion into spreadsheets for reporting.",
+      "Collaborated cross-functionally to ship production releases.",
     ],
+    links: [],
   },
   {
     company: "Janata Diagnostic Centre",
     role: "SDE • Web Developer",
-    location: "Remote",
     timeframe: "2024 — 2025",
-    level: 2,
+    location: "Remote",
     bullets: [
-      "Built and deployed a production Next.js website (responsive UI + clean routing).",
-      "Improved information architecture for services and navigation clarity.",
-      "Shipped to Vercel with stable builds and performance-focused pages.",
+      "Built and deployed a production Next.js website with responsive UI and clean routing.",
+      "Improved site structure for service discovery and navigation clarity.",
+      "Deployed on Vercel with stable builds and performance-focused pages.",
     ],
-    links: {
-      live: "https://janatadiagnosticcentre.vercel.app/",
-      repo: "https://github.com/sumayya6652/janatadiagnosticcentre",
-    },
+    links: [
+      { label: "Live", href: "https://janatadiagnosticcentre.vercel.app/" },
+      { label: "GitHub", href: "https://github.com/sumayya6652/janatadiagnosticcentre" },
+    ],
   },
   {
     company: "Camp Australia",
     role: "Inclusion Support Educator (OSHC)",
-    location: "NSW, Australia",
     timeframe: "Mar 2025 — Present",
-    level: 3,
+    location: "NSW, Australia",
     bullets: [
       "Supported children requiring additional learning/development assistance.",
-      "Planned and delivered inclusive activities in a safety-first environment.",
-      "Worked with educators and families to support individual needs.",
+      "Delivered inclusive programs with safety-first routines and clear communication.",
+      "Coordinated with educators and families to support individual needs.",
     ],
+    links: [],
   },
   {
     company: "Academic Tutor",
-    role: "Tutor (Math/CS/Physics)",
-    location: "Sydney, Australia",
+    role: "Tutor (Math / CS / Physics)",
     timeframe: "Feb 2025 — Present",
-    level: 4,
+    location: "Sydney, Australia",
     bullets: [
-      "Tutored students in programming and problem-solving with structured guidance.",
-      "Created simplified explanations and practice plans to improve outcomes.",
-      "Adapted teaching approach to student level and learning style.",
+      "Tutored students with structured plans and step-by-step explanations.",
+      "Created practice sets and feedback loops to improve performance.",
+      "Adapted teaching style to different student needs and levels.",
     ],
+    links: [],
   },
 ];
 
+const itemVariants = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0 },
+};
+
 const AchievementsSection = () => {
   return (
-    <section className="py-8 px-4 sm:py-14 xl:px-16" id="experience">
-      <div className="sm:border-[#33353F] sm:border rounded-md py-10 px-6 sm:px-10">
-        <div className="flex items-end justify-between gap-4 mb-8">
-          <div>
-            <h2 className="text-white text-3xl sm:text-4xl font-bold">
-              Experience
-            </h2>
-            <p className="text-[#ADB7BE] mt-2">
-              Timeline-style highlights (click links where available).
-            </p>
-          </div>
+    <section id="experience" className="py-10 px-4 sm:py-16 xl:px-16">
+      <div className="sm:border-[#33353F] sm:border rounded-md py-10 px-6 sm:px-10 bg-black/10">
+        <div className="mb-8">
+          <h2 className="text-white text-3xl sm:text-4xl font-bold">
+            Experience
+          </h2>
+          <p className="text-[#ADB7BE] mt-2">
+            LinkedIn-style timeline — scroll to see roles step down the ladder.
+          </p>
         </div>
 
-        {/* Stairs container */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 items-end">
-          {experienceList.map((item, idx) => {
-            // “stairs”: each next card is raised a bit more on large screens
-            const stairOffset = item.level * 10; // adjust if you want steeper
-            return (
-              <motion.div
-                key={`${item.company}-${idx}`}
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.25 }}
-                transition={{ duration: 0.35, delay: idx * 0.08 }}
-                className="rounded-2xl border border-white/10 bg-white/5 overflow-hidden"
-                style={{
-                  // stairs effect (only meaningful on wider layouts)
-                  transform: `translateY(-${stairOffset}px)`,
-                }}
-              >
-                <div className="p-5">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="text-white font-semibold text-lg">
-                        {item.company}
-                      </p>
-                      <p className="text-white/80 text-sm mt-1">{item.role}</p>
-                      <p className="text-[#ADB7BE] text-xs mt-2">
-                        {item.location} • {item.timeframe}
-                      </p>
-                    </div>
+        {/* Timeline container */}
+        <div className="relative">
+          {/* Vertical line */}
+          <div className="absolute left-4 sm:left-1/2 top-0 bottom-0 w-px bg-white/10" />
 
-                    {/* Animated “level” badge */}
-                    <div className="flex items-center gap-1">
-                      <span className="text-white/60 text-xs">Lvl</span>
-                      <span className="text-white text-sm font-bold">
-                        <AnimatedNumbers
-                          animateToNumber={item.level}
-                          includeComma={false}
-                          locale="en-US"
-                          className="text-white text-sm font-bold"
-                          configs={() => ({
-                            mass: 1,
-                            friction: 90,
-                            tension: 160,
-                          })}
-                        />
-                      </span>
+          <div className="space-y-8">
+            {EXPERIENCE.map((item, idx) => {
+              const isLeft = idx % 2 === 0; // alternate on desktop
+              return (
+                <motion.div
+                  key={`${item.company}-${idx}`}
+                  variants={itemVariants}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true, amount: 0.25 }}
+                  transition={{ duration: 0.45, delay: idx * 0.06 }}
+                  className="relative"
+                >
+                  {/* Dot / step */}
+                  <div
+                    className="
+                      absolute left-4 sm:left-1/2 top-6
+                      -translate-x-1/2
+                      h-4 w-4 rounded-full
+                      bg-gradient-to-br from-primary-500 to-secondary-500
+                      ring-4 ring-black/40
+                    "
+                  />
+
+                  {/* Card */}
+                  <div
+                    className={[
+                      "ml-10 sm:ml-0",
+                      "rounded-2xl border border-white/10 bg-white/5",
+                      "p-5 sm:p-6",
+                      "shadow-[0_0_0_1px_rgba(255,255,255,0.02)]",
+                      "backdrop-blur",
+                      // Desktop alternating layout
+                      "sm:w-[calc(50%-2.25rem)]",
+                      isLeft ? "sm:mr-[calc(50%+2.25rem)]" : "sm:ml-[calc(50%+2.25rem)]",
+                    ].join(" ")}
+                  >
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <p className="text-white font-semibold text-lg">
+                            {item.company}
+                          </p>
+                          <p className="text-white/80 text-sm mt-1">
+                            {item.role}
+                          </p>
+                          <p className="text-[#ADB7BE] text-xs mt-2">
+                            {item.location} • {item.timeframe}
+                          </p>
+                        </div>
+
+                        {/* step badge */}
+                        <div className="shrink-0">
+                          <span className="text-xs text-white/70 border border-white/15 rounded-full px-2 py-1">
+                            Step {idx + 1}
+                          </span>
+                        </div>
+                      </div>
+
+                      <ul className="mt-4 list-disc pl-5 text-white/75 text-sm space-y-2">
+                        {item.bullets.map((b, bIdx) => (
+                          <li key={bIdx}>{b}</li>
+                        ))}
+                      </ul>
+
+                      {item.links?.length ? (
+                        <div className="mt-5 flex flex-wrap gap-2">
+                          {item.links.map((l) => (
+                            <a
+                              key={l.href}
+                              href={l.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={
+                                l.label === "Live"
+                                  ? "px-3 py-1.5 rounded-full text-sm bg-gradient-to-br from-primary-500 to-secondary-500 text-white hover:opacity-90"
+                                  : "px-3 py-1.5 rounded-full text-sm border border-white/15 text-white hover:bg-white/5"
+                              }
+                            >
+                              {l.label}
+                            </a>
+                          ))}
+                        </div>
+                      ) : null}
                     </div>
                   </div>
-
-                  <ul className="mt-4 list-disc pl-5 text-white/75 text-sm space-y-2">
-                    {item.bullets.map((b, bIdx) => (
-                      <li key={bIdx}>{b}</li>
-                    ))}
-                  </ul>
-
-                  {item.links ? (
-                    <div className="mt-5 flex flex-wrap gap-2">
-                      {item.links.live ? (
-                        <a
-                          href={item.links.live}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="px-3 py-1.5 rounded-full text-sm bg-gradient-to-br from-primary-500 to-secondary-500 text-white hover:opacity-90"
-                        >
-                          Live
-                        </a>
-                      ) : null}
-                      {item.links.repo ? (
-                        <a
-                          href={item.links.repo}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="px-3 py-1.5 rounded-full text-sm border border-white/15 text-white hover:bg-white/5"
-                        >
-                          GitHub
-                        </a>
-                      ) : null}
-                    </div>
-                  ) : null}
-                </div>
-
-                {/* subtle bottom bar for visual hierarchy */}
-                <div className="h-1 w-full bg-gradient-to-r from-primary-500/70 to-secondary-500/70" />
-              </motion.div>
-            );
-          })}
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
-
-        <p className="text-white/40 text-xs mt-6">
-          Tip: Replace placeholder timeframes/bullets with exact dates and
-          measurable outcomes where possible.
-        </p>
       </div>
     </section>
   );
