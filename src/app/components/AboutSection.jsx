@@ -149,7 +149,7 @@ const TAB_DATA = [
           <p className="text-white/80 font-semibold mb-2">Frontend</p>
           <ul className="list-disc pl-5 text-white/80">
             <li>React, Next.js</li>
-            <li>JavaScript (add TypeScript if you use it)</li>
+            <li>JavaScript</li>
             <li>Responsive UI, accessibility basics</li>
           </ul>
         </div>
